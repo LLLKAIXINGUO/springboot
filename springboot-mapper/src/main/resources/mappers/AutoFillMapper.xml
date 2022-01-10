@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcq.mapper.AutoFillMapper">
+
+    <sql id="tableName">
+        auto_fill
+    </sql>
+
+    <sql id="field">
+        name,
+        age,
+        is_delete,
+        create_by,
+        update_by,
+        create_time,
+        update_time
+    </sql>
+    <sql id="values">
+        #{name},
+        #{age},
+        #{isDelete},
+        #{createBy},
+        #{updateBy},
+        #{createTime},
+        #{updateTime}
+    </sql>
+
+    <!--  插入数据    -->
+    <insert id="addOne" parameterType="AutoFill" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        <include refid="tableName"/>
+        (<include refid="field"/>)
+        values
+        (<include refid="values"/>)
+    </insert>
+
+    <!-- 修改数据   -->
+    <update id="updateOne">
+        update
+        auto_fill a
+        set
+        age = #{age},
+        is_delete = #{isDelete},
+        create_by = #{createBy},
+        update_by = #{updateBy},
+        create_time = #{createTime},
+        update_time = #{updateTime}
+        where a.id = #{id}
+    </update>
+
+
+    <select id="findPage" resultMap="autoFileVOMap" >
+        select af.id, af.name, af.age, ag.id, ag.aname,ag.aid
+        from auto_fill af left join auto_gill ag on af.id = ag.aid
+        where af.name =#{map.name}
+    </select>
+    <resultMap id="autoFileVOMap" type="AutoFillVo">
+       <id column="id" property="id"></id>
+       <result column="name" property="name"></result>
+       <result column="age" property="age"></result>
+       <result column="is_delete" property="isDelete"></result>
+       <result column="create_by" property="createBy"></result>
+       <result column="update_by" property="updateBy"></result>
+       <result column="create_time" property="createTime"></result>
+       <result column="update_time" property="updateTime"></result>
+       <collection property="autoGillList" ofType="AutoGill" >
+           <id column="id" property="id"></id>
+           <result column="aname" property="aname"></result>
+           <result column="aid" property="aid"></result>
+       </collection>
+    </resultMap>
+
+</mapper>

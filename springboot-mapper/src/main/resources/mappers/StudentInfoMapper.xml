@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcq.mapper.StudentInfoMapper">
+    <!--
+            resultType:如果没有配置类型别名，那么必须要写全限定名
+                        如果配置了别名，那么可以使用别名（不区分大小写），也可以使用权限定名
+      -->
+
+      <sql id="tb">
+            student_info
+      </sql>
+
+      <sql id="cols_all" >
+            id,
+            <include refid="cols_exclude_id"/>
+      </sql>
+
+      <sql id="cols_exclude_id">name,password,nickName,sex,age,birthday,phone,address,email,cardId,level</sql>
+
+      <sql id="values">#{name},#{password},#{nickName},#{sex},#{age},#{birthday},#{phone},#{address},#{email},#{cardId},#{level}</sql>
+
+      <resultMap id="getOneMap" type="StudentInfo">
+           <id column="id" property="id"></id>
+           <result column="name" property="name"></result>
+           <result column="password" property="password"></result>
+           <result column="nickName" property="nickName"></result>
+           <result column="sex" property="sex"></result>
+           <result column="age" property="age"></result>
+           <result column="birthday" property="birthday"></result>
+           <result column="phone" property="phone"></result>
+           <result column="address" property="address"></result>
+           <result column="email" property="email"></result>
+           <result column="cardId" property="cardId"></result>
+           <result column="level" property="level"></result>
+        
+      </resultMap>
+    <select id="getOne" resultType="StudentInfo" >
+        select * from
+        <include refid="tb" />
+        where name = #{name}
+    </select>
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        <include refid="tb"/>
+        (<include refid="cols_exclude_id"/>)
+        values(<include refid="values">
+        <property name="name" value="name"/>
+        <property name="password" value="password"/>
+        <property name="nickName" value="nickName"/>
+        <property name="sex" value="sex"/>
+        <property name="age" value="age"/>
+        <property name="birthday" value="birthday"/>
+        <property name="phone" value="phone"/>
+        <property name="address" value="address"/>
+        <property name="email" value="email"/>
+        <property name="cardId" value="cardId"/>
+        <property name="level" value="level"/>
+        </include>)
+    </insert>
+
+    <insert id="save2" >
+        insert into
+        <include refid="tb"/>
+        (name,level)
+        values (#{name},#{level})
+    </insert>
+
+    <update id="update" parameterType="StudentInfo">
+        update student_info s set s.sex= #{sex} where s.id = #{id}
+    </update>
+</mapper>

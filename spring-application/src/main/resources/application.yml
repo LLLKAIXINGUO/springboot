@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://110.40.172.88:3306/xuanke?useUnicode=true&characterEncoding=utf8&useSSL=false
+      username: root
+      password: Admin123!
+  #redis的连接信息
+  redis:
+    host: 110.40.172.88
+    port: 6699
+    password: 123456
+      #redis连接池的配置信息
+    lettuce:
+      pool:
+        max-active: 8
+  # server酱的SendKey
+  serverchan:
+    sckey: SCT97811T5dC3zDexWJj2lvOmB7mAJAj3
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰映射
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启日志打印
+  mapper-locations: /mappers/*.xml  #加载mapper xml 文件
+  type-aliases-package: com.dcq.entity  #别名扫描
+  global-config:
+    db-config:
+      logic-delete-field: isDelete
+      logic-delete-value: 1 #逻辑已删除的值
+      logic-not-delete-value: 0 #逻辑未删除的值
+
+server:
+  port: 8080
+# swagger 配置
+swagger:
+  enable: true  # 生成环境一定要去掉，切记
+  version: v1.0.0
+  title: 测试接口
+  description: 测试接口
+  basePackage: com.dcq
